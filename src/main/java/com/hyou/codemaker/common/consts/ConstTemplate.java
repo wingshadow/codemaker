@@ -1,5 +1,8 @@
 package com.hyou.codemaker.common.consts;
 
+/**
+ * @author wingshadow
+ */
 public class ConstTemplate {
 
     public static final String CODE_UTF8 = "UTF-8";
