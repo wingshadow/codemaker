@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.hyou.codemaker.bean.info.DbInfoOper;
 import com.hyou.codemaker.bean.objdef.FieldCfg;
+import com.hyou.codemaker.common.consts.ConstDataBase;
 import com.hyou.codemaker.common.consts.ConstDataType;
 import com.hyou.codemaker.config.ConfigBaseProp;
 import com.hyou.codemaker.config.ConfigBeanProp;
@@ -22,7 +24,7 @@ import com.hyou.codemaker.db.pojo.ResultColumnsBean;
 import com.hyou.codemaker.util.RegUtil;
 
 /**
- * 从MySQL中获取数据库表信息
+ * 从数据库中获取数据库表信息
  *
  * @author Changshuo.Feng
  * @version 1.3.1 2017-10-31 10:40:18 添加对Double数据类型的支持
@@ -115,13 +117,13 @@ public class DbMySQLInfoOperImpl implements DbInfoOper {
 
     private String transToMybatisDataType(ResultColumnsBean resultColumnsBean, String dataBaseType) {
         String dataType = resultColumnsBean.getDataType();
-        if (dataBaseType.equals("mysql")) {
+        if (StringUtils.equals(dataBaseType, ConstDataBase.DATABASE_MYSQL)) {
             if (ConstDataType.MYSQL_INT.equalsIgnoreCase(dataType)) {
                 dataType = ConstDataType.MYBATIS_JDBC_INT;
             } else if (ConstDataType.MYSQL_DATETIME.equalsIgnoreCase(dataType)) {
                 dataType = ConstDataType.MYBATIS_JDBC_TIMESTAMP;
             }
-        } else if (dataBaseType.equals("oracle")) {
+        } else if (StringUtils.equals(dataBaseType, ConstDataBase.DATABASE_ORACLE)) {
             if (ConstDataType.ORACLE_NUMBER.equalsIgnoreCase(dataType)) {
                 int length = resultColumnsBean.getDataPrecision();
                 int scale = resultColumnsBean.getDataScale();
@@ -150,7 +152,7 @@ public class DbMySQLInfoOperImpl implements DbInfoOper {
 
         String dataType = resultColumnsBean.getDataType();
         String columnType = resultColumnsBean.getColumnType();
-        if (dataBaseType.equals("oracle")) {
+        if (dataBaseType.equals(ConstDataBase.DATABASE_ORACLE)) {
             if (ConstDataType.ORACLE_CHAR.equalsIgnoreCase(dataType)) {
                 return ConstDataType.JAVA_STRING;
             } else if (ConstDataType.ORACLE_VARCHAR.equalsIgnoreCase(dataType)) {
