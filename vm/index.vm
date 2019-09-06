@@ -1,0 +1,184 @@
+<template>
+  <div class="app-container">
+    <el-form :inline="true" :model="queryForm" class="demo-form-inline" size="small">
+
+      #foreach( $fieldObj in $fieldList )
+        <el-form-item label="${fieldObj.comment}">
+        <el-input v-model="queryForm.${fieldObj.name}"  placeholder="请输入${fieldObj.comment}"></el-input>
+      </el-form-item>
+    #end
+
+      <el-form-item>
+        <el-button type="primary" @click="query()" size="mini" round>查询</el-button>
+        <el-button type="primary" icon="el-icon-share" v-if="checkPermission(['adminx:user:add'])" size="mini" @click="openAdd()" round>新增</el-button>
+        <el-button type="primary" icon="el-icon-share" size="mini" @click="openEdit()" round>修改</el-button>
+        <el-button type="primary" icon="el-icon-share" size="mini" @click="del()" round>删除</el-button>
+      </el-form-item>
+    </el-form>
+    <!-- singleTable   --  multipleTable-->
+    <el-table
+      ref="singleTable"
+      :data="tableData"
+      highlight-current-row
+      @current-change="selectRow"
+      tooltip-effect="dark"
+      :header-cell-style="{'background-color': 'rgb(220,233,250)','color':'rgb(10,115,207)','text-align':'center'}"
+      style="width: 100%;"
+      size="small"
+      @select="selectRowCheckbox">
+  
+   #foreach( $fieldObj in $fieldList )
+   <el-table-column align="center"
+                       prop="${fieldObj.name}"
+                       label="${fieldObj.comment}"
+                       show-overflow-tooltip width="220px"
+      >
+     </el-table-column>
+    #end
+    </el-table>
+    <el-pagination
+      style="margin:5px 0 0px 0"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageNum"
+      :page-sizes="[10, 20, 30, 50]"
+      :page-size="limit"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
+    <el-dialog :title="title" :visible.sync="formVisible" width="42%"><!--:before-close="handleClose"-->
+    <${className}Form ref="refForm" :data="formInitData"></${className}Form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="formVisible = false">取 消</el-button>
+      <el-button type="primary" @click="save()">确 定</el-button>
+    </div>
+  </el-dialog>
+
+  </div>
+</template>
+
+<script>
+  import { getList, remove } from '@/api/${className}'
+  import  ${className}Form from './${className}Form.vue'
+  import checkPermission from '@/utils/permission' // 权限判断函数
+  export default {
+    data() {
+      return {
+        selectedRow: null,
+        pageNum: 1,
+        limit: 10,
+        total: 0,
+        tableData: [],
+        multipleSelection: [],
+        queryForm: {
+          name: '',
+          code: ''
+        },
+        select: '',
+        formVisible: false,
+        formInitData: {},
+        bindFormVisible: false,
+        bindFormInitData: {},
+        title: ''
+      }
+    },
+    created() {
+      this.query()
+    },
+    components: {
+       ${className}Form
+    },
+    methods: {
+      checkPermission,
+      selectRow(row) {
+        this.selectedRow = row
+      },
+      selectRowCheckbox(selection, row) {
+        this.selectedRow = row
+      },
+      handleSizeChange(limit) {
+        this.limit = limit
+        this.query()
+      },
+      handleCurrentChange(pageNum) {
+        this.pageNum = pageNum
+        this.query()
+      },
+      query() {
+        var param =  {
+        #foreach( $fieldObj in $fieldList )
+          '${fieldObj.name}': this.queryForm.${fieldObj.name},
+        #end
+        'pageNum': this.pageNum, 'pageSize': this.pageSize
+     }
+      getList(param).then(response => {
+          this.tableData = response.data.list
+          this.pageSize = response.data.pageSize
+          this.pageNum = response.data.pageNum
+          this.total = response.data.total
+        })
+      },
+      openAdd() {
+        this.title = '新增${tableName}'
+        this.formVisible = true
+        this.formInitData = {
+         #foreach( $fieldObj in $fieldList )
+           '${fieldObj.name}': '',
+          #end
+         
+        }
+      },
+      openEdit() {
+        if (this.selectedRow) {
+          this.title = '编辑${tableName}'
+          this.formVisible = true
+          this.formInitData = this.selectedRow
+        } else {
+          this.${fh}message.error('请选择一条记录')}
+        }
+      },
+      save() {
+        this.${fh}refs.refForm.save().then((data) => {
+          if (data.errorcode === 0) {
+            this.${fh}message({ 'message': '操作成功', 'type': 'success' })
+            this.formVisible = false
+            this.query()
+          } else {
+            this.${fh}message.error(data.message)
+          }
+        })
+      },
+      bindSave() {
+        this.${fh}refs.refBindForm.save().then((data) => {
+          if (data.errorcode === 0) {
+            this.${fh}message({ 'message': '操作成功', 'type': 'success' })
+            this.bindformVisible = false
+          } else {
+            this.${fh}message.error(data.message)
+          }
+        })
+      },
+      del() {
+        if (this.selectedRow) {
+          this.${fh}confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            var param = { 'id': this.selectedRow.id }
+            remove(param).then((data) => {
+              if (data.errorcode === 0) {
+                this.${fh}message({ 'message': '操作成功', 'type': 'success' })
+                this.query()
+              } else {
+                this.${fh}message.error(data.message)
+              }
+            })
+          })
+        } else {
+          this.${fh}message.error('请选择一条删除记录')
+        }
+      }
+    }
+  }
+</script>

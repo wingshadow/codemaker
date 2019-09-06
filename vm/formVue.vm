@@ -1,0 +1,58 @@
+<template>
+  <el-form ref="form" :rules="rules" :model="data" label-width="90px" size="mini">
+    <el-row>
+      <el-col :span="11">
+     #foreach( $fieldObj in $fieldList )
+        <el-form-item label="${fieldObj.comment}" prop="name">
+          <el-input v-model="data.${fieldObj.name}"></el-input>
+        </el-form-item>
+      #end
+      </el-col>
+    </el-row>
+  </el-form>
+
+</template>
+<script>
+  import { save, editSave } from '@/api/${className}'
+
+  export default {
+    data() {
+      return {
+        rules: {
+          name: [
+            { required: true, message: '请输入字典名称', trigger: 'blur' },
+            { min: 1, max: 16, message: '长度应小于16个字符', trigger: 'blur' }
+          ],
+          code: [
+            { required: true, message: '请输入字典代码', trigger: 'blur' },
+            { min: 1, max: 16, message: '长度应小于16个字符', trigger: 'blur' }
+          ]
+        }
+      }
+    },
+    props: ['data'],
+    methods: {
+      save() {
+        return this.${fh}refs.form.validate().then((valid)} => {
+          if (valid) {
+            var param = {
+              #foreach( $fieldObj in $fieldList )
+                '${fieldObj.name}': this.data.${fieldObj.name},
+              #end
+            }
+            if (this.data.id) {
+              return editSave(param)
+            } else {
+              return save(param)
+            }
+          } else {
+            return Promise.reject('表单验证失败')
+          }
+        })
+      },
+      resetForm() {
+        this.${fh}refs.form.resetFields()
+      }
+    }
+  }
+</script>

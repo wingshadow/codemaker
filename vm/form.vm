@@ -1,0 +1,28 @@
+package ${packageName};
+
+import com.dolphin.topup.common.base.BaseBean;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * ${className} Bean定义类，对应表${tableName}
+ * 
+ * @author ${author}
+ * @version ${version} $createDate 初始创建
+ */
+@Getter
+@Setter
+public class ${className} extends BaseForm {
+
+#foreach( $fieldObj in $fieldList ) 
+    /**
+     * ${fieldObj.comment}
+     */
+
+    private String ${fieldObj.name};
+    
+#end
+
+}

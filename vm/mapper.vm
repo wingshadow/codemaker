@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${namespace}">
+
+    <resultMap id="BaseResultMap" type="${packageName}.${className}">
+#foreach( $fieldCfgObj in $fieldCfgLst ) 
+        <result column="${fieldCfgObj.columnName}" jdbcType="${fieldCfgObj.databaseType}" property="${fieldCfgObj.name}" #if(${fieldCfgObj.databaseType} == 'TIMESTAMP')javaType="java.util.Date"#end/>
+#end
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+#foreach( $fieldCfgObj in $fieldCfgLst ) 
+#if(${velocityCount} < ${fieldCfgLst.size()})
+        ${fieldCfgObj.columnName},
+#else
+        ${fieldCfgObj.columnName}
+#end
+#end
+    </sql>
+    
+    <insert id="insert" 
+            parameterType="${packageName}.${className}">
+     INSERT INTO ${tableName} (
+#foreach( $fieldCfgObj in $fieldCfgLst ) 
+#if(${velocityCount} < ${fieldCfgLst.size()})
+        ${fieldCfgObj.columnName},
+#else
+        ${fieldCfgObj.columnName}
+#end
+#end
+     ) VALUES (
+#foreach( $fieldCfgObj in $fieldCfgLst ) 
+#if(${velocityCount} < ${fieldCfgLst.size()})
+        #{${fieldCfgObj.name},jdbcType=${fieldCfgObj.databaseType}},
+#else
+        #{${fieldCfgObj.name},jdbcType=${fieldCfgObj.databaseType}}
+#end
+#end
+     )
+    </insert>
+
+    <insert id="insertBatch" 
+            parameterType="list">
+     INSERT INTO ${tableName} (
+#foreach( $fieldCfgObj in $fieldCfgLst ) 
+#if(${velocityCount} < ${fieldCfgLst.size()})
+        ${fieldCfgObj.columnName},
+#else
+        ${fieldCfgObj.columnName}
+#end
+#end
+     ) VALUES
+     <foreach collection="list" item="item" separator=",">
+     (
+#foreach( $fieldCfgObj in $fieldCfgLst ) 
+#if(${velocityCount} < ${fieldCfgLst.size()})
+        #{item.${fieldCfgObj.name},jdbcType=${fieldCfgObj.databaseType}},
+#else
+        #{item.${fieldCfgObj.name},jdbcType=${fieldCfgObj.databaseType}}
+#end
+#end
+     )
+     </foreach>
+    </insert>
+    
+    <insert id="insertSelective" 
+            parameterType="${packageName}.${className}">
+     INSERT INTO ${tableName}
+     <trim prefix="(" suffix=")" suffixOverrides="," >
+#foreach( $fieldCfgObj in $fieldCfgLst ) 
+       <if test="${fieldCfgObj.name} != null">
+           ${fieldCfgObj.columnName},
+       </if>
+#end
+     </trim>
+     <trim prefix="values (" suffix=")" suffixOverrides="," >
+#foreach( $fieldCfgObj in $fieldCfgLst ) 
+       <if test="${fieldCfgObj.name} != null">
+           #{${fieldCfgObj.name},jdbcType=${fieldCfgObj.databaseType}},
+       </if>
+#end
+     </trim>
+    </insert>
+    
+    <delete id="deleteByPrimaryKey" 
+            parameterType="java.lang.Long">
+     DELETE FROM ${tableName} WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <delete id="deleteBatchByPrimaryKeys" 
+            parameterType="list">
+     DELETE FROM ${tableName} 
+      WHERE id IN (
+   <foreach collection="list" item="item" separator=",">
+            #{item,jdbcType=BIGINT}
+   </foreach>
+            )
+    </delete>
+    
+    <update id="updateByPrimaryKeySelective" 
+            parameterType="${packageName}.${className}">
+     UPDATE ${tableName} 
+       <set>
+#foreach( $fieldCfgObj in $fieldCfgLst ) 
+#if('id' != ${fieldCfgObj.name})
+        <if test="${fieldCfgObj.name} != null">
+            ${fieldCfgObj.columnName} = #{${fieldCfgObj.name},jdbcType=${fieldCfgObj.databaseType}},
+        </if>
+#end
+#end
+       </set>
+      WHERE id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="selectByPrimaryKey" 
+            parameterType="java.lang.Long" 
+            resultMap="BaseResultMap">
+     SELECT <include refid="Base_Column_List" />
+       FROM ${tableName}
+      WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <select id="selectByConditions" 
+            parameterType="${packageName}.${className}" 
+            resultMap="BaseResultMap">
+     SELECT <include refid="Base_Column_List" />
+       FROM ${tableName}
+     <where>
+#foreach( $fieldCfgObj in $fieldCfgLst ) 
+
+#if('VARCHAR' == ${fieldCfgObj.databaseType})
+        <if test="${fieldCfgObj.name} != null and ${fieldCfgObj.name} != ''">
+                 AND ${fieldCfgObj.columnName} = #{${fieldCfgObj.name},jdbcType=${fieldCfgObj.databaseType}}
+        </if>
+#end
+#if('VARCHAR' != ${fieldCfgObj.databaseType})
+        <if test="${fieldCfgObj.name} != null">
+                 AND ${fieldCfgObj.columnName} = #{${fieldCfgObj.name},jdbcType=${fieldCfgObj.databaseType}}
+        </if>
+#end
+#end
+     </where>
+    </select>
+
+    <!--自定义sql-->
+     
+    
+
+</mapper>

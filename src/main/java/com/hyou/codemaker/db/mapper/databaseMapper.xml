@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyou.codemaker.db.dao.ColumnDao">
+
+<select id="selectTableInfo"
+        parameterType="com.hyou.codemaker.db.pojo.ParamColumnsBean"
+        resultType="com.hyou.codemaker.db.pojo.ResultColumnsBean">
+select t.TABLE_NAME as "tableName",t.COLUMN_NAME as "columnName",t.COLUMN_ID as "ordinalPosition",t.DATA_TYPE as "dataType",
+t.DATA_LENGTH as "characterMaximumLength",t.DATA_TYPE as "columnType",
+u.comments as "columnComment",t.NULLABLE as "nulLable",t.data_length as "columnSize",
+ nvl(t.DATA_PRECISION ,0) as "dataPrecision",
+ nvl(t.DATA_SCALE,0) as "dataScale"
+  from user_tab_columns  t
+left join user_col_comments u on t.COLUMN_NAME=u.COLUMN_NAME and t.TABLE_NAME=u.table_name
+ where t.table_name =  #{tableName}
+  ORDER BY t.COLUMN_ID
+    </select>
+
+</mapper>

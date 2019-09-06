@@ -1,0 +1,73 @@
+package ${daoPackageName};
+
+import java.util.List;
+
+import ${beanPackageName}.${beanClass};
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ * ${daoClassName} Dao接口定义类，(表${tableName})
+ *
+ * @author ${author}
+ * @version ${version} $createDate 初始创建
+ */
+@Mapper
+@Repository
+public interface ${daoClassName} {
+
+    /**
+     * 新增一条${beanClass}记录
+     * 
+     * @param ${beanParamName} 要新增的${beanClass}记录数据对象
+     */
+    void insert(${beanClass} ${beanParamName});
+    
+    /**
+     * 批量新增${beanClass}记录
+     * 
+     * @param ${beanParamName}s 要新增的${beanClass}记录数据对象集合
+     */
+    void insertBatch(List<${beanClass}> ${beanParamName}s);
+    
+    /**
+     * 根据主键ID，删除一条${beanClass}记录
+     * 
+     * @param id ${beanClass}的主键
+     */
+    void deleteByPrimaryKey(Long id);
+    
+    /**
+     * 根据主键ID，批量删除多条${beanClass}记录
+     *
+     * @param ids ${beanClass}的主键集合
+     */
+    void deleteBatchByPrimaryKeys(List<Long> ids);
+    
+    /**
+     * 根据主键更新${beanClass}数据记录
+     * 
+     * @param ${beanParamName} 要更新的${beanClass}数据对象
+     */
+    void updateByPrimaryKeySelective(${beanClass} ${beanParamName});
+    
+    /**
+     * 根据主键查询${beanClass}数据对象
+     * 
+     * @param id ${beanClass}的主键
+     * @return ${beanClass}数据对象
+     */
+    ${beanClass} selectByPrimaryKey(Long id);
+    
+    /**
+     * <pre>
+     * 根据数据对象${beanParamName}查询符合条件的${beanClass}结果集
+     * 根据${beanParamName}动态拼接查询条件。
+     * </pre>
+     *
+     * @param ${beanParamName} 用于封装查询条件
+     * @return ${beanClass}数据查询结果集
+     */
+    List<${beanClass}> selectByConditions(${beanClass} ${beanParamName});
+    
+}

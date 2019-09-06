@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 项目名称 -->
+    <contextName>Gateway</contextName>
+    
+    <property name="USER_HOME" value="./log"/>
+    <property name="FILE_SIZE" value="5MB" />
+    
+    <!-- 控制台打印日志 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <!-- pattern模式 %d时间 %thread 线程名 %level行为级别 %logger logger名称 %method 方法名称 %message 调用方法的入参消息 -->
+            <pattern>%d %-5level [%thread] [%logger-%method[%line]] %message%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- 文件打印日志 -->
+    <appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- <prudent>true</prudent> -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${USER_HOME}/codemaker.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%thread] [%logger-%method[%line]] %message%n</pattern>
+        </encoder>
+    </appender>
+    
+    <logger name="org.springframework" level="warn" />
+    
+    <logger name="com.hyou" level="debug" />
+    
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ALL"/>
+    </root>
+    
+</configuration>

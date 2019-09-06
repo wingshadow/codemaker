@@ -1,0 +1,91 @@
+package ${servicePackageName};
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+
+import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
+import com.dolphin.topup.common.base.BaseService;
+import ${daoPackageName}.${daoClassName};
+import ${serviceItfcPckageName}.${serviceInterfaceName};
+import ${beanPackageName}.${beanClass};
+import org.springframework.stereotype.Service;
+/**
+ * ${serviceClassName} Service接口实现类
+ *
+ * @author ${author}
+ * @version ${version} $createDate 初始创建
+ */
+@Service
+@Slf4j
+public class ${serviceClassName} extends BaseService implements ${serviceInterfaceName} {
+    
+    @Autowired
+    private ${daoClassName} ${daoIocName};
+
+    @Override
+    public Long insert(${beanClass} paramBean) {
+        Long newId = getNextId();
+        paramBean.setId(newId);
+        ${daoIocName}.insert(paramBean);
+        return newId;
+    }
+    
+    @Override
+    public void insertBatch(List<${beanClass}> paramBeans) {
+        for (${beanClass} item : paramBeans) {
+            Long newId = getNextId();
+            item.setId(newId);
+        }
+        
+        ${daoIocName}.insertBatch(paramBeans);
+    }
+    
+    @Override
+    public void deleteByPrimaryKey(Long id) {
+        ${daoIocName}.deleteByPrimaryKey(id);
+    }
+    
+    @Override
+    public void deleteBatchByPrimaryKeys(String ids) {
+        String[] idArray = StringUtils.split(ids, ',');
+        List<Long> idLst = new ArrayList<>();
+        for (String item : idArray) {
+            idLst.add(Long.valueOf(item));
+        }
+        
+        deleteBatchByPrimaryKeys(idLst);
+    }
+    
+    @Override
+    public void deleteBatchByPrimaryKeys(List<Long> ids) {
+        ${daoIocName}.deleteBatchByPrimaryKeys(ids);
+    }
+    
+    @Override
+    public void updateByPrimaryKeySelective(${beanClass} paramBean) {
+        ${daoIocName}.updateByPrimaryKeySelective(paramBean);
+    }
+    
+    @Override
+    public ${beanClass} getByPrimaryKey(Long id) {
+        return ${daoIocName}.selectByPrimaryKey(id);
+    }
+    
+    @Override
+    public List<${beanClass}> listByConditions(${beanClass} paramBean) {
+        return ${daoIocName}.selectByConditions(paramBean);
+    }
+    
+    @Override
+    public PageInfo<${beanClass}> listByPage(${beanClass} paramBean, final int pageNum, final int pageSize) {
+        PageMethod.startPage(pageNum, pageSize);
+        List<${beanClass}> lst = ${daoIocName}.selectByConditions(paramBean);
+        return new PageInfo<>(lst);
+    }
+    
+}
