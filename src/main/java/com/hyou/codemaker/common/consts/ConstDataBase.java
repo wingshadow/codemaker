@@ -3,7 +3,7 @@ package com.hyou.codemaker.common.consts;
 /**
  * @author fy
  * @Title: ConstDataBase
- * @Description: TODO
+ * @Description: 数据库常量
  * @date 2019/9/6 11:18
  */
 public class ConstDataBase {
