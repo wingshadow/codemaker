@@ -1,7 +1,7 @@
 package com.hyou.codemaker.common.consts;
 
 /**
- * @author fy
+ * @author wingshadow
  * @Title: ConstDataBase
  * @Description: 数据库常量
  * @date 2019/9/6 11:18
