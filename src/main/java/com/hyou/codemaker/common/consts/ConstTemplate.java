@@ -26,6 +26,7 @@ public class ConstTemplate {
     public static final String  INDEX_VUE= "vm/index.vm";
 
     public static final String  FORM_VUE= "vm/formVue.vm";
+
     public static final String  CONTROLLER= "vm/controller.vm";
 
 }

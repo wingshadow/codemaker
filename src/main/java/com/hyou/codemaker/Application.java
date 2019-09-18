@@ -112,8 +112,8 @@ public class Application {
         /*
          * 以下为生成indexVuie接口实现类定义的操作
          */
-//        ControlllerMaker controllerMaker = context.getBean("controllerMaker", ControlllerMaker.class);
-//        controllerMaker.velocityMerge();
+        ControlllerMaker controllerMaker = context.getBean("controllerMaker", ControlllerMaker.class);
+        controllerMaker.velocityMerge();
     }
     
 }

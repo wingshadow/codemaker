@@ -7,6 +7,7 @@ import com.hyou.codemaker.common.velocity.BaseMerge;
 import com.hyou.codemaker.common.writer.WriterMaker;
 import com.hyou.codemaker.util.RegUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
@@ -82,6 +83,7 @@ public class FormMaker extends BaseMerge {
         context.put("packageName", packageName);
         context.put("controllerPackage",controllerPackage);
         context.put("className", className);
+        context.put("classLowerName", StringUtils.lowerCase(className));
         context.put("createDate", createDate);
         context.put("tableName", tableName);
         context.put("author", author);

@@ -6,6 +6,7 @@ import com.hyou.codemaker.common.velocity.BaseMerge;
 import com.hyou.codemaker.common.writer.WriterMaker;
 import com.hyou.codemaker.util.RegUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.velocity.VelocityContext;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,7 @@ public class ControlllerMaker extends BaseMerge {
         String servicePackageName = getConfigBaseProp().getServiceImplPackage();
         String beanPackageName = getConfigBaseProp().getPojoPackage();
         String tableName = getConfigBeanProp().getTableName();
+        String className = RegUtil.tableToClassName(tableName);
         String beanClassName = RegUtil.tableToClassName(tableName);
         String serviceInterfaceName = beanClassName + "Service";
         String serviceClassName = beanClassName + "ServiceImpl";
@@ -70,6 +72,8 @@ public class ControlllerMaker extends BaseMerge {
         context.put("beanPackageName", beanPackageName);
         context.put("beanClass", beanClassName + "DO");
         context.put("tableName", tableName);
+        context.put("className", className);
+        context.put("classLowerName", StringUtils.lowerCase(className));
         context.put("createDate", createDate);
         context.put("serviceInterfaceName", serviceInterfaceName);
         context.put("serviceClassName", serviceClassName);
