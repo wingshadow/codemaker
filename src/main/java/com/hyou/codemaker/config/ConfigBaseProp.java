@@ -66,6 +66,8 @@ public class ConfigBaseProp extends BaseBean {
     private String version;
 
     private String dataBaseType;
+
+    private String controllerPackage;
     
     /**
      * @return 生成的代码文件的存放目录
@@ -199,5 +201,13 @@ public class ConfigBaseProp extends BaseBean {
 
     public void setDataBaseType(String dataBaseType) {
         this.dataBaseType = dataBaseType;
+    }
+
+    public String getControllerPackage() {
+        return controllerPackage;
+    }
+
+    public void setControllerPackage(String controllerPackage) {
+        this.controllerPackage = controllerPackage;
     }
 }

@@ -23,6 +23,7 @@ public interface ColumnDao {
      * @param paramColumnsBean 表信息查询参数
      * @return 表信息查询结果
      */
-    List<ResultColumnsBean> selectTableInfo(ParamColumnsBean paramColumnsBean);
-    
+    List<ResultColumnsBean> selectOracleTableInfo(ParamColumnsBean paramColumnsBean);
+
+    List<ResultColumnsBean> selectMysqlTableInfo(ParamColumnsBean paramColumnsBean);
 }

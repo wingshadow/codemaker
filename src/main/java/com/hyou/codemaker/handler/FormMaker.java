@@ -64,6 +64,7 @@ public class FormMaker extends BaseMerge {
     private void velocityMerge(List<FieldDef> fieldDefLst) {
 
         String packageName = getConfigBaseProp().getPojoPackage();
+        String controllerPackage = getConfigBaseProp().getControllerPackage();
         String tableName = getConfigBeanProp().getTableName();
         String className = RegUtil.tableToClassName(tableName);
 
@@ -79,7 +80,8 @@ public class FormMaker extends BaseMerge {
         VelocityContext context = new VelocityContext();
         context.put("fieldList", fieldDefLst);
         context.put("packageName", packageName);
-        context.put("className", className + "DO");
+        context.put("controllerPackage",controllerPackage);
+        context.put("className", className);
         context.put("createDate", createDate);
         context.put("tableName", tableName);
         context.put("author", author);

@@ -2,14 +2,12 @@ package com.hyou.codemaker.db.pojo;
 
 import com.hyou.codemaker.common.bean.BaseBean;
 
-public class ParamColumnsBean extends BaseBean
-{
+public class ParamColumnsBean extends BaseBean {
     private static final long serialVersionUID = 2288060549736806238L;
     private String tableSchema;
     private String tableName;
 
-    public String getTableSchema()
-    {
+    public String getTableSchema() {
         return this.tableSchema;
     }
 

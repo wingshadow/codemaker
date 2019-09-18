@@ -25,7 +25,7 @@ public class FormFileWriterMakerImpl extends AbstractFileWriterMaker {
         String destDir = getConfigBaseProp().getDestDir();
         
         String beanClassName = RegUtil.tableToClassName(getConfigBeanProp().getTableName());
-        String serviceClassName = beanClassName + "form";
+        String serviceClassName = beanClassName + "Form";
         String destFileName = serviceClassName + ConstCommon.JAVA_FILE;
         log.debug("destFileName=[{}]", destFileName);
         

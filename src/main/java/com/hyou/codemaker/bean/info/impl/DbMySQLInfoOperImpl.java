@@ -111,8 +111,10 @@ public class DbMySQLInfoOperImpl implements DbInfoOper {
         paramBean.setTableName(table);
 
         log.debug("ParamColumnsBean=[{}]", paramBean);
-
-        return columnDao.selectTableInfo(paramBean);
+        if(configBaseProp.getDataBaseType().equals("mysql")){
+            return columnDao.selectMysqlTableInfo(paramBean);
+        }
+        return columnDao.selectOracleTableInfo(paramBean);
     }
 
     private String transToMybatisDataType(ResultColumnsBean resultColumnsBean, String dataBaseType) {

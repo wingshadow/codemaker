@@ -91,8 +91,8 @@ public class Application {
         /*
          * 以下为生成Service抽象类定义的操作
          */
-        ServiceAbstractMaker serviceAbstractMaker = context.getBean("serviceAbstractMaker", ServiceAbstractMaker.class);
-        serviceAbstractMaker.velocityMerge();
+//        ServiceAbstractMaker serviceAbstractMaker = context.getBean("serviceAbstractMaker", ServiceAbstractMaker.class);
+//        serviceAbstractMaker.velocityMerge();
         /*
          * 以下为生成FromVuie接口实现类定义的操作
          */
@@ -101,24 +101,19 @@ public class Application {
         /*
          * 以下为生成FromVuie接口实现类定义的操作
          */
-       // FormVueMaker formVueMaker = context.getBean("formVueMaker", FormVueMaker.class);
-        //formVueMaker.velocityMerge();
+//        FormVueMaker formVueMaker = context.getBean("formVueMaker", FormVueMaker.class);
+//        formVueMaker.velocityMerge();
         /*
          * 以下为生成indexVuie接口实现类定义的操作
          */
-        //IndexMaker indexMaker = context.getBean("indexMaker", IndexMaker.class);
-        //indexMaker.velocityMerge();
+//        IndexMaker indexMaker = context.getBean("indexMaker", IndexMaker.class);
+//        indexMaker.velocityMerge();
 
         /*
          * 以下为生成indexVuie接口实现类定义的操作
          */
-      /*  ControlllerMaker controllerMaker = context.getBean("controllerMaker", ControlllerMaker.class);
-        controllerMaker.velocityMerge();
-*/
-
-
-
-
+//        ControlllerMaker controllerMaker = context.getBean("controllerMaker", ControlllerMaker.class);
+//        controllerMaker.velocityMerge();
     }
     
 }
