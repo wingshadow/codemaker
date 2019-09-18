@@ -5,6 +5,7 @@ import com.dolphin.topup.common.base.BaseController;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import com.github.pagehelper.PageInfo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -29,14 +30,14 @@ import java.util.*;
 @Slf4j
 public class ${className}Controller extends BaseController {
     @Resource
-    private ${className}Service;
+    private ${className}Service ${classLowerName}Service;
 
     @RequestMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseMessage list(@RequestBody ${className}Form ${classLowerName}Form) {
 
         ${className}DO ${classLowerName}DO = new ${className}DO();
-        BeanCopyUtil.copyFormObjectWithIgnoreCase(${classLowerName}Form, dic);
-        List<${className}DO> list = ${classLowerName}Service.listByPage(${classLowerName}DO,
+        BeanCopyUtil.copyFormObjectWithIgnoreCase(${classLowerName}Form, ${classLowerName}DO);
+        PageInfo<${className}DO> list = ${classLowerName}Service.listByPage(${classLowerName}DO,
         ${classLowerName}Form.getPageNum(),${classLowerName}Form.getPageSize());
         return ResponseMessageUtil.genSuccessResult(list);
     }
@@ -63,7 +64,7 @@ public class ${className}Controller extends BaseController {
         if (${classLowerName}DO.getId() == null) {
             return ResponseMessageUtil.genFailResult("ID为空");
         }
-        ${classLowerName}Service.updateByPrimaryKeySelective(dic);
+        ${classLowerName}Service.updateByPrimaryKeySelective(${classLowerName}DO);
         return ResponseMessageUtil.genSuccessResult("修改成功");
     }
 }
