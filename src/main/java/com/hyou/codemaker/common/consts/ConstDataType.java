@@ -24,7 +24,7 @@ public class ConstDataType {
     public static final String MYSQL_VARCHAR = "varchar";
     public static final String MYSQL_CHAR = "char";
     public static final String MYSQL_INT = "int";
-    public static final String MYSQL_FLOAT = "Float";
+    public static final String MYSQL_FLOAT = "float";
     public static final String MYSQL_BIGINT = "bigint";
     public static final String MYSQL_DOUBLE = "double";
     public static final String MYSQL_DECIMAL = "decimal";
