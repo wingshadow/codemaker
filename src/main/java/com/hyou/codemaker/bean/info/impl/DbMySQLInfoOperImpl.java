@@ -212,6 +212,8 @@ public class DbMySQLInfoOperImpl implements DbInfoOper {
             } else if (ConstDataType.MYSQL_DOUBLE.equalsIgnoreCase(dataType)) {
                 // double -> Double
                 return ConstDataType.JAVA_DOUBLE;
+            } else if(ConstDataType.MYSQL_FLOAT.equalsIgnoreCase(dataType)){
+                return ConstDataType.JAVA_FLOAT;
             }
         }
         return ConstDataType.JAVA_STRING;
