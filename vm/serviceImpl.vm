@@ -20,8 +20,9 @@ import org.springframework.stereotype.Service;
  * @author ${author}
  * @version ${version} $createDate 初始创建
  */
-@Service
+
 @Slf4j
+@Service("")
 public class ${serviceClassName} extends BaseService implements ${serviceInterfaceName} {
     
     @Autowired

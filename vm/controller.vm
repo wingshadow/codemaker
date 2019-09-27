@@ -52,12 +52,12 @@ public class ${className}Controller extends BaseController {
 
     @RequestMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseMessage delete(@RequestBody ${className}Form ${classLowerName}Form) {
-        ${classLowerName}Service.deleteByPrimaryKey(Long.valueOf(${classLowerName}Form.getId()));
+        ${classLowerName}Service.deleteBatchByPrimaryKeys(${classLowerName}Form.getIds());
         return ResponseMessageUtil.genSuccessResult();
     }
 
     @RequestMapping(value = "/edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseMessage editDic(@RequestBody ${className}Form ${classLowerName}Form) {
+    public ResponseMessage edit(@RequestBody ${className}Form ${classLowerName}Form) {
         ${className}DO ${classLowerName}DO = new ${className}DO();
         BeanCopyUtil.copyFormObjectWithIgnoreCase(${classLowerName}Form, ${classLowerName}DO);
 
@@ -66,5 +66,11 @@ public class ${className}Controller extends BaseController {
         }
         ${classLowerName}Service.updateByPrimaryKeySelective(${classLowerName}DO);
         return ResponseMessageUtil.genSuccessResult("修改成功");
+    }
+
+    @RequestMapping(value = "/detail", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseMessage detail(@RequestBody Long id){
+        ${className}DO ${classLowerName}DO = ${classLowerName}Service.getByPrimaryKey(id);
+        return ResponseMessageUtil.genSuccessResult(${classLowerName}DO);
     }
 }
