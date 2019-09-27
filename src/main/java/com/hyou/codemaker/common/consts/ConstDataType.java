@@ -14,6 +14,7 @@ public class ConstDataType {
     public static final String JAVA_STRING = "String";
     public static final String JAVA_INTEGER = "Integer";
     public static final String JAVA_LONG = "Long";
+    public static final String JAVA_FLOAT= "Float";
     public static final String JAVA_DOUBLE = "Double";
     public static final String JAVA_DATE = "Date";
     
@@ -23,6 +24,7 @@ public class ConstDataType {
     public static final String MYSQL_VARCHAR = "varchar";
     public static final String MYSQL_CHAR = "char";
     public static final String MYSQL_INT = "int";
+    public static final String MYSQL_FLOAT = "Float";
     public static final String MYSQL_BIGINT = "bigint";
     public static final String MYSQL_DOUBLE = "double";
     public static final String MYSQL_DECIMAL = "decimal";
