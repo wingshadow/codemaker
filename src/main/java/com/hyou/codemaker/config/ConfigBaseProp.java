@@ -1,11 +1,8 @@
 package com.hyou.codemaker.config;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
+import com.hyou.codemaker.common.bean.BaseBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import com.hyou.codemaker.common.bean.BaseBean;
 
 /**
  * 基本配置部分
