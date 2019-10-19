@@ -1,5 +1,7 @@
 package com.hyou.codemaker.config;
 
+import jdk.nashorn.internal.objects.annotations.Getter;
+import jdk.nashorn.internal.objects.annotations.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +21,22 @@ public class ConfigBaseProp extends BaseBean {
      * serialVersionUID
      */
     private static final long serialVersionUID = -285639777059501098L;
-    
+
+    private String basePackage;
+
     /**
      * 生成的代码文件的存放目录
      */
     private String destDir;
-    
+
+    public String getBasePackage() {
+        return basePackage;
+    }
+
+    public void setBasePackage(String basePackage) {
+        this.basePackage = basePackage;
+    }
+
     /**
      * 生成的pojo类的包路径
      */
