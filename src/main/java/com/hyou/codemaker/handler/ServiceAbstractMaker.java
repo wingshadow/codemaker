@@ -29,7 +29,7 @@ public class ServiceAbstractMaker extends BaseMerge {
     private WriterMaker writerMaker;
     
     @Override
-    public void velocityMerge() {
+    public void velocityMerge(String vmTemplate) {
         
         String serviceItfcPckageName = getConfigBaseProp().getServiceItfcPackage();
         String serviceAbsPackageName = getConfigBaseProp().getServiceAbsPackage();
@@ -57,7 +57,7 @@ public class ServiceAbstractMaker extends BaseMerge {
         context.put("serviceItfcPckageName", serviceItfcPckageName);
         context.put("serviceAbsPackageName", serviceAbsPackageName);
         context.put("beanPackageName", beanPackageName);
-        context.put("beanClass", beanClassName + "DO");
+        context.put("beanClass", beanClassName);
         context.put("tableName", tableName);
         context.put("createDate", createDate);
         context.put("serviceInterfaceName", serviceInterfaceName);
@@ -70,7 +70,7 @@ public class ServiceAbstractMaker extends BaseMerge {
         context.put("author", author);
         context.put("version", version);
         
-        velocityMerge(context, writerMaker, ConstTemplate.SERVICE_ABSTRACT_VM);
+        velocityMerge(context, writerMaker, vmTemplate);
     }
     
 }

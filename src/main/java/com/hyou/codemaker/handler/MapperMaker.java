@@ -22,70 +22,71 @@ import com.hyou.codemaker.util.RegUtil;
 
 /**
  * Mapper文件代码生成类入口
- * 
+ *
  * @author Changshuo.Feng
  * @version 1.0.0 2014年8月3日 上午1:03:54
  */
 @Component("mapperMaker")
 public class MapperMaker extends BaseMerge {
 
-    private static final Logger log = LoggerFactory.getLogger(MapperMaker.class);
-    
+    private static final Logger log =
+            LoggerFactory.getLogger(MapperMaker.class);
+
     @Resource(name = "configMapperProp")
     private ConfigMapperProp configMapperProp;
-    
+
     @Resource(name = "mySQLDbInfoOper")
     private DbInfoOper infoOper;
 
     @Resource(name = "configBaseProp")
     private ConfigBaseProp configBaseProp;
-    
+
     /**
      * 内容生成器
      */
     @Resource(name = "mapperFileWriterMaker")
     private WriterMaker writerMaker;
-    
+
     @Override
-    public void velocityMerge() {
+    public void velocityMerge(String vmTempalte) {
         // 获取数据对象
         List<FieldCfg> fieldCfgLst = infoOper.getFieldCfgList();
-        if(CollectionUtils.isEmpty(fieldCfgLst)) {
+        if (CollectionUtils.isEmpty(fieldCfgLst)) {
             log.info("infoOper.getFieldsList result is null or size is 0");
             return;
         }
-        for(FieldCfg cs : fieldCfgLst){
-            if(cs.getDatabaseType().equals("VARCHAR2")){
+        for (FieldCfg cs : fieldCfgLst) {
+            if (cs.getDatabaseType().equals("VARCHAR2")) {
                 cs.setDatabaseType("VARCHAR");
             }
         }
-        
+
         // 将数据对象结合模板引擎，将最终内容打印到终端或生成到指定文件
-        velocityMerge(fieldCfgLst);
+        velocityMerge(fieldCfgLst, vmTempalte);
     }
-    
+
     /**
      * <pre>
      * 版本修改历史记录：
      * 1) 1.3.0 2017-10-19 14:12:35 FengChangshuo Bean类名添加“DO”后缀
      * </pre>
      */
-    private void velocityMerge(List<FieldCfg> fieldCfgLst) {
-        
+    private void velocityMerge(List<FieldCfg> fieldCfgLst, String vmTempalte) {
+
         String packageName = getConfigBaseProp().getPojoPackage();
         String tableName = getConfigBeanProp().getTableName();
         String className = RegUtil.tableToClassName(tableName);
-        
+
         boolean useDao = configMapperProp.isUseDao();
         String namespacePrefix = configMapperProp.getNamespacePrefix();
         String namespace = namespacePrefix + ConstCommon.DOT_STR + className;
-        
+
         if (useDao) {
             namespace = namespace + "Dao";
         } else {
             namespace = namespace + "Mapper";
         }
-        
+
         /*
          * Make a context object and populate with the data. This is where
          * the Velocity engine gets the data to resolve the references (ex.
@@ -96,12 +97,12 @@ public class MapperMaker extends BaseMerge {
         context.put("namespace", namespace);
         context.put("packageName", packageName);
         context.put("tableName", tableName);
-        context.put("className", className + "DO");
+        context.put("className", className);
         String vm = ConstTemplate.MAPPER_VM;
-        if("oracle".equalsIgnoreCase(configBaseProp.getDataBaseType())){
+        if ("oracle".equalsIgnoreCase(configBaseProp.getDataBaseType())) {
             vm = ConstTemplate.MAPPER_VM_ORACLE;
         }
-        velocityMerge(context, writerMaker, vm);
+        velocityMerge(context, writerMaker, vmTempalte);
     }
-    
+
 }

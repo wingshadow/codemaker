@@ -31,7 +31,7 @@ public class DaoMaker extends BaseMerge {
      * </pre>
      */
     @Override
-    public void velocityMerge() {
+    public void velocityMerge(String vmTemplate) {
         
         String daoPackageName = getConfigBaseProp().getDaoPackage();
         String beanPackageName = getConfigBaseProp().getPojoPackage();
@@ -56,13 +56,13 @@ public class DaoMaker extends BaseMerge {
         context.put("createDate", createDate);
         context.put("daoIocName", daoIocName);
         context.put("daoClassName", daoClassName);
-        context.put("beanClass", beanClassName + "DO");
+        context.put("beanClass", beanClassName);
         context.put("beanParamName", beanParamName);
         context.put("tableName", tableName);
         context.put("author", author);
         context.put("version", version);
         
-        velocityMerge(context, writerMaker, ConstTemplate.DAO_VM);
+        velocityMerge(context, writerMaker, vmTemplate);
     }
 
 }

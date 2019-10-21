@@ -36,11 +36,12 @@ public class ServiceImplMaker extends BaseMerge {
      * </pre>
      */
     @Override
-    public void velocityMerge() {
+    public void velocityMerge(String vmTemplate) {
         
         String serviceItfcPckageName = getConfigBaseProp().getServiceItfcPackage();
         String serviceAbsPackageName = getConfigBaseProp().getServiceAbsPackage();
         String servicePackageName = getConfigBaseProp().getServiceImplPackage();
+        String basePackage = getConfigBaseProp().getBasePackage();
         String beanPackageName = getConfigBaseProp().getPojoPackage();
         String tableName = getConfigBeanProp().getTableName();
         String beanClassName = RegUtil.tableToClassName(tableName);
@@ -66,7 +67,8 @@ public class ServiceImplMaker extends BaseMerge {
         context.put("serviceItfcPckageName", serviceItfcPckageName);
         context.put("servicePackageName", servicePackageName);
         context.put("beanPackageName", beanPackageName);
-        context.put("beanClass", beanClassName + "DO");
+        context.put("basePackage", basePackage);
+        context.put("beanClass", beanClassName);
         context.put("tableName", tableName);
         context.put("createDate", createDate);
         context.put("serviceInterfaceName", serviceInterfaceName);
@@ -81,7 +83,7 @@ public class ServiceImplMaker extends BaseMerge {
         context.put("author", author);
         context.put("version", version);
         
-        velocityMerge(context, writerMaker, ConstTemplate.SERVICE_IMPL_VM);
+        velocityMerge(context, writerMaker, vmTemplate);
         
     }
     

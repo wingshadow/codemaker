@@ -43,7 +43,7 @@ public class BeanMaker extends BaseMerge {
     private WriterMaker writerMaker;
     
     @Override
-    public void velocityMerge() {
+    public void velocityMerge(String vmTemplate) {
         
         // 获取数据对象
         List<FieldDef> rs = fieldsMaker.getFieldsList();
@@ -53,7 +53,7 @@ public class BeanMaker extends BaseMerge {
         }
         
         // 将数据对象结合模板引擎，将最终内容打印到终端或生成到指定文件
-        velocityMerge(rs);
+        velocityMerge(rs,vmTemplate);
     }
     
     /**
@@ -62,9 +62,10 @@ public class BeanMaker extends BaseMerge {
      * 1) 1.3.0 2017-10-19 14:03:50 FengChangshuo 文件名添加“DO”标识
      * </pre>
      */
-    private void velocityMerge(List<FieldDef> fieldDefLst) {
+    private void velocityMerge(List<FieldDef> fieldDefLst,String vmTemplate) {
         
         String packageName = getConfigBaseProp().getPojoPackage();
+        String basePackage = getConfigBaseProp().getBasePackage();
         String tableName = getConfigBeanProp().getTableName();
         String className = RegUtil.tableToClassName(tableName);
         
@@ -79,14 +80,16 @@ public class BeanMaker extends BaseMerge {
          */
         VelocityContext context = new VelocityContext();
         context.put("fieldList", fieldDefLst);
+        context.put("basePackage", basePackage);
         context.put("packageName", packageName);
-        context.put("className", className + "DO");
+        context.put("className", className);
         context.put("createDate", createDate);
         context.put("tableName", tableName);
         context.put("author", author);
         context.put("version", version);
-        
-        velocityMerge(context, writerMaker, ConstTemplate.BEAN_VM);
+
+
+        velocityMerge(context, writerMaker, vmTemplate);
     }
     
 }

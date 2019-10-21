@@ -39,11 +39,12 @@ public class ControlllerMaker extends BaseMerge {
      * </pre>
      */
     @Override
-    public void velocityMerge() {
+    public void velocityMerge(String vmTemplate) {
         
         String serviceItfcPckageName = getConfigBaseProp().getServiceItfcPackage();
         String serviceAbsPackageName = getConfigBaseProp().getServiceAbsPackage();
         String servicePackageName = getConfigBaseProp().getServiceImplPackage();
+        String basePackage = getConfigBaseProp().getBasePackage();
         String controllerPackage = getConfigBaseProp().getControllerPackage();
         String beanPackageName = getConfigBaseProp().getPojoPackage();
         String tableName = getConfigBeanProp().getTableName();
@@ -71,8 +72,9 @@ public class ControlllerMaker extends BaseMerge {
         context.put("serviceItfcPckageName", serviceItfcPckageName);
         context.put("servicePackageName", servicePackageName);
         context.put("beanPackageName", beanPackageName);
+        context.put("basePackage", basePackage);
         context.put("controllerPackage",controllerPackage);
-        context.put("beanClass", beanClassName + "DO");
+        context.put("beanClass", beanClassName);
         context.put("tableName", tableName);
         context.put("className", className);
         context.put("classLowerName", StringUtils.lowerCase(className));
@@ -89,7 +91,7 @@ public class ControlllerMaker extends BaseMerge {
         context.put("author", author);
         context.put("version", version);
         
-        velocityMerge(context, writerMaker, ConstTemplate.CONTROLLER);
+        velocityMerge(context, writerMaker, vmTemplate);
         
     }
     

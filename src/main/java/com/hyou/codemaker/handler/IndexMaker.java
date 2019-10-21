@@ -41,7 +41,7 @@ public class IndexMaker extends BaseMerge {
     private WriterMaker writerMaker;
     
     @Override
-    public void velocityMerge() {
+    public void velocityMerge(String vmTempalte) {
         
         // 获取数据对象
         List<FieldDef> rs = fieldsMaker.getFieldsList();
@@ -51,7 +51,7 @@ public class IndexMaker extends BaseMerge {
         }
         
         // 将数据对象结合模板引擎，将最终内容打印到终端或生成到指定文件
-        velocityMerge(rs);
+        velocityMerge(rs,vmTempalte);
     }
     
     /**
@@ -60,7 +60,7 @@ public class IndexMaker extends BaseMerge {
      * 1) 1.3.0 2017-10-19 14:03:50 FengChangshuo 文件名添加“DO”标识
      * </pre>
      */
-    private void velocityMerge(List<FieldDef> fieldDefLst) {
+    private void velocityMerge(List<FieldDef> fieldDefLst,String vmTempalte) {
         
         String packageName = getConfigBaseProp().getPojoPackage();
         String tableName = getConfigBeanProp().getTableName();
@@ -85,7 +85,7 @@ public class IndexMaker extends BaseMerge {
         context.put("version", version);
         context.put("fh", "$");
 
-        velocityMerge(context, writerMaker, ConstTemplate.INDEX_VUE);
+        velocityMerge(context, writerMaker, vmTempalte);
     }
     
 }

@@ -6,6 +6,8 @@ import com.hyou.codemaker.common.consts.ConstTemplate;
 import com.hyou.codemaker.common.velocity.BaseMerge;
 import com.hyou.codemaker.common.writer.WriterMaker;
 import com.hyou.codemaker.util.RegUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -20,10 +22,12 @@ import java.util.List;
 
 /**
  * Bean代码生成主入口类
- * 
+ *
  * @author Changshuo.Feng
  * @version 1.0.0 2014年8月2日 上午11:17:10
  */
+@Setter
+@Getter
 @Component("formMaker")
 public class FormMaker extends BaseMerge {
 
@@ -43,17 +47,17 @@ public class FormMaker extends BaseMerge {
     private WriterMaker writerMaker;
 
     @Override
-    public void velocityMerge() {
+    public void velocityMerge(String vmTemplate) {
 
         // 获取数据对象
         List<FieldDef> rs = fieldsMaker.getFieldsList();
-        if(CollectionUtils.isEmpty(rs)) {
+        if (CollectionUtils.isEmpty(rs)) {
             log.info("fieldsMaker.getFieldsList result is empty");
             return;
         }
 
         // 将数据对象结合模板引擎，将最终内容打印到终端或生成到指定文件
-        velocityMerge(rs);
+        velocityMerge(rs, vmTemplate);
     }
 
     /**
@@ -62,14 +66,16 @@ public class FormMaker extends BaseMerge {
      * 1) 1.3.0 2017-10-19 14:03:50 FengChangshuo 文件名添加“DO”标识
      * </pre>
      */
-    private void velocityMerge(List<FieldDef> fieldDefLst) {
+    private void velocityMerge(List<FieldDef> fieldDefLst, String vmTemplate) {
 
         String packageName = getConfigBaseProp().getPojoPackage();
         String controllerPackage = getConfigBaseProp().getControllerPackage();
+        String basePackage = getConfigBaseProp().getBasePackage();
         String tableName = getConfigBeanProp().getTableName();
         String className = RegUtil.tableToClassName(tableName);
 
-        String createDate = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+        String createDate = DateFormatUtils.format(new Date(), "yyyy-MM-dd " +
+                "HH:mm:ss");
         String author = getConfigBaseProp().getAuthor();
         String version = getConfigBaseProp().getVersion();
 
@@ -81,7 +87,8 @@ public class FormMaker extends BaseMerge {
         VelocityContext context = new VelocityContext();
         context.put("fieldList", fieldDefLst);
         context.put("packageName", packageName);
-        context.put("controllerPackage",controllerPackage);
+        context.put("basePackage", basePackage);
+        context.put("controllerPackage", controllerPackage);
         context.put("className", className);
         context.put("classLowerName", StringUtils.lowerCase(className));
         context.put("createDate", createDate);
@@ -89,7 +96,7 @@ public class FormMaker extends BaseMerge {
         context.put("author", author);
         context.put("version", version);
 
-        velocityMerge(context, writerMaker, ConstTemplate.FORM_VM);
+        velocityMerge(context, writerMaker, vmTemplate);
     }
 
 
