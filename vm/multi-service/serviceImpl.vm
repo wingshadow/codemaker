@@ -1,4 +1,4 @@
-package ${servicePackageName};
+ackage ${servicePackageName};
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
-import com.dolphin.topup.common.base.BaseService;
-import ${daoPackageName}.${daoClassName};
+import ${basePackage}.common.base.BaseService;
 import ${serviceItfcPckageName}.${serviceInterfaceName};
 import ${beanPackageName}.${beanClass};
+import ${basePackage}.common.AbstractBaseServiceImpl;
+
 import org.springframework.stereotype.Service;
 /**
  * ${serviceClassName} Service接口实现类
@@ -22,17 +23,17 @@ import org.springframework.stereotype.Service;
  */
 
 @Slf4j
-@Service("")
-public class ${serviceClassName} extends BaseService implements ${serviceInterfaceName} {
-    
-    @Autowired
-    private ${daoClassName} ${daoIocName};
+@Service
+public class ${serviceClassName} extends AbstractBaseServiceImpl implements ${serviceInterfaceName} {
+
+    private static final String MAPPER_ADDRES =
+            ${beanClass}.class.getName() + "Mapper.";
 
     @Override
     public Long insert(${beanClass} paramBean) {
         Long newId = getNextId();
         paramBean.setId(newId);
-        ${daoIocName}.insert(paramBean);
+        getMasterSession().insert(paramBean);
         return newId;
     }
     
@@ -42,13 +43,13 @@ public class ${serviceClassName} extends BaseService implements ${serviceInterfa
             Long newId = getNextId();
             item.setId(newId);
         }
-        
-        ${daoIocName}.insertBatch(paramBeans);
+
+        getMasterSession().insertBatch(paramBeans);
     }
     
     @Override
     public void deleteByPrimaryKey(Long id) {
-        ${daoIocName}.deleteByPrimaryKey(id);
+        getMasterSession().deleteByPrimaryKey(id);
     }
     
     @Override
@@ -64,28 +65,28 @@ public class ${serviceClassName} extends BaseService implements ${serviceInterfa
     
     @Override
     public void deleteBatchByPrimaryKeys(List<Long> ids) {
-        ${daoIocName}.deleteBatchByPrimaryKeys(ids);
+        getMasterSession().deleteBatchByPrimaryKeys(ids);
     }
     
     @Override
     public void updateByPrimaryKeySelective(${beanClass} paramBean) {
-        ${daoIocName}.updateByPrimaryKeySelective(paramBean);
+        getMasterSession().updateByPrimaryKeySelective(paramBean);
     }
     
     @Override
     public ${beanClass} getByPrimaryKey(Long id) {
-        return ${daoIocName}.selectByPrimaryKey(id);
+        return getMasterSession().selectByPrimaryKey(id);
     }
     
     @Override
     public List<${beanClass}> listByConditions(${beanClass} paramBean) {
-        return ${daoIocName}.selectByConditions(paramBean);
+        return getMasterSession().selectByConditions(paramBean);
     }
     
     @Override
     public PageInfo<${beanClass}> listByPage(${beanClass} paramBean, final int pageNum, final int pageSize) {
         PageMethod.startPage(pageNum, pageSize);
-        List<${beanClass}> lst = ${daoIocName}.selectByConditions(paramBean);
+        List<${beanClass}> lst = getMasterSession().selectByConditions(paramBean);
         return new PageInfo<>(lst);
     }
     

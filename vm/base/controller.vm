@@ -1,15 +1,12 @@
 package ${controllerPackage}.${classLowerName};
 
-import com.dolphin.topup.common.base.BaseBean;
-import com.dolphin.topup.common.base.BaseController;
-import com.dolphin.topup.persistence.service.${className}Service;
+import ${basePackage}.common.base.BaseBean;
+import ${basePackage}.persistence.service.${className}Service;
 
 import org.hibernate.validator.constraints.Length;
 import com.github.pagehelper.PageInfo;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,15 +22,15 @@ import java.util.*;
  * @author ${author}
  * @version ${version} $createDate 初始创建
  */
-@RestController
-@RequestMapping("/adminx/${classLowerName}")
 @Slf4j
-public class ${className}Controller extends BaseController {
+@RestController
+@RequestMapping("/${classLowerName}")
+public class ${className}Controller {
     @Resource
     private ${className}Service ${classLowerName}Service;
 
     @RequestMapping(value = "/list", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseMessage list(@RequestBody ${className}Form ${classLowerName}Form) {
+    public ResponseMessage list(@RequestBody ListForm form) {
 
         ${className}DO ${classLowerName}DO = new ${className}DO();
         BeanCopyUtil.copyFormObjectWithIgnoreCase(${classLowerName}Form, ${classLowerName}DO);
@@ -43,22 +40,28 @@ public class ${className}Controller extends BaseController {
     }
 
     @RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseMessage add(@RequestBody ${className}Form ${classLowerName}Form) {
-        ${className}DO ${classLowerName}DO = new ${className}DO();
+    public ResponseMessage add(@RequestBody AddForm form) {
+        ${className} ${classLowerName}DO = new ${className}();
         BeanCopyUtil.copyFormObjectWithIgnoreCase(${classLowerName}Form, ${classLowerName}DO);
         ${classLowerName}Service.insert(${classLowerName}DO);
         return ResponseMessageUtil.genSuccessResult("新增成功");
     }
 
     @RequestMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseMessage delete(@RequestBody ${className}Form ${classLowerName}Form) {
-        ${classLowerName}Service.deleteBatchByPrimaryKeys(${classLowerName}Form.getIds());
+    public ResponseMessage delete(@RequestBody DeleteForm form) {
+        String[] idArray = StringUtils.split(form.getId());
+        List<Long> list = new ArrayList<>();
+        for(String id : idArray){
+            list.add(Long.parseLong(id));
+        }
+        ${classLowerName}Service.deleteBatchByPrimaryKeys(list);
         return ResponseMessageUtil.genSuccessResult();
     }
 
-    @RequestMapping(value = "/edit", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseMessage edit(@RequestBody ${className}Form ${classLowerName}Form) {
-        ${className}DO ${classLowerName}DO = new ${className}DO();
+    @RequestMapping(value = "/update", produces = MediaType
+    .APPLICATION_JSON_UTF8_VALUE)
+    public ResponseMessage edit(@RequestBody UpdateForm form) {
+        ${className} ${classLowerName}DO = new ${className}();
         BeanCopyUtil.copyFormObjectWithIgnoreCase(${classLowerName}Form, ${classLowerName}DO);
 
         if (${classLowerName}DO.getId() == null) {
@@ -70,7 +73,7 @@ public class ${className}Controller extends BaseController {
 
     @RequestMapping(value = "/detail", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseMessage detail(@RequestBody Long id){
-        ${className}DO ${classLowerName}DO = ${classLowerName}Service.getByPrimaryKey(id);
+        ${className} ${classLowerName}DO = ${classLowerName}Service.getByPrimaryKey(id);
         return ResponseMessageUtil.genSuccessResult(${classLowerName}DO);
     }
 }

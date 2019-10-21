@@ -1,4 +1,3 @@
-
 package ${packageName};
 
 #set($hasDate = 0)
@@ -10,7 +9,9 @@ import java.util.Date;
 #end
 #end
 #end
-import com.dolphin.xmj.common.base.BaseBean;
+import ${basePackage}.common.base.BaseBean;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * ${className} Bean定义类，对应表${tableName}
@@ -18,6 +19,8 @@ import com.dolphin.xmj.common.base.BaseBean;
  * @author ${author}
  * @version ${version} $createDate 初始创建
  */
+@Getter
+@Setter
 public class ${className} extends BaseBean {
 
 #foreach( $fieldObj in $fieldList ) 
@@ -27,20 +30,5 @@ public class ${className} extends BaseBean {
     private ${fieldObj.type} ${fieldObj.name};
     
 #end
-#foreach( $fieldObj in $fieldList ) 
-    /**
-     * @return ${fieldObj.name} ${fieldObj.comment}
-     */
-    public ${fieldObj.type} ${fieldObj.getter}() {
-        return this.${fieldObj.name};
-    }
-    
-    /**
-     * @param ${fieldObj.name} ${fieldObj.comment}
-     */
-    public void ${fieldObj.setter}(${fieldObj.type} ${fieldObj.name}) {
-        this.${fieldObj.name} = ${fieldObj.name};
-    }
-    
-#end
+
 }
