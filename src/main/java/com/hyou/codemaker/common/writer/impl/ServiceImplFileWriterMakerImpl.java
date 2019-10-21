@@ -2,6 +2,10 @@ package com.hyou.codemaker.common.writer.impl;
 
 import java.io.File;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,21 +19,20 @@ import com.hyou.codemaker.util.RegUtil;
  * @author Changshuo.Feng
  * @version 1.0.0 2014年8月18日 下午4:01:48
  */
+@Slf4j
+@Getter
+@Setter
 @Component("serviceImplFileWriterMaker")
 public class ServiceImplFileWriterMakerImpl extends AbstractFileWriterMaker {
-
-    private static final Logger log = LoggerFactory.getLogger(ServiceImplFileWriterMakerImpl.class);
-    
+    private String name;
     @Override
     public String getOutputFilePath() {
-        
         String destDir = getConfigBaseProp().getDestDir();
-        
         String beanClassName = RegUtil.tableToClassName(getConfigBeanProp().getTableName());
-        String serviceClassName = beanClassName + "ServiceImpl";
-        String destFileName = serviceClassName + ConstCommon.JAVA_FILE;
-        log.debug("destFileName=[{}]", destFileName);
-        
+        String destFileName = beanClassName + "ServiceImpl" + ConstCommon.JAVA_FILE;
+        if(StringUtils.isNotBlank(name)){
+            destFileName = name + "ServiceImpl" + ConstCommon.JAVA_FILE;
+        }
         File destDirFile = new File(destDir);
         if(!destDirFile.exists()) {
             destDirFile.mkdirs();
