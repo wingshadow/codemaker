@@ -1,5 +1,8 @@
 package com.hyou.codemaker;
 
+import com.hyou.codemaker.common.consts.ConstTemplate;
+import com.hyou.codemaker.common.writer.impl.FormFileWriterMakerImpl;
+import com.hyou.codemaker.config.ConfigBeanProp;
 import com.hyou.codemaker.handler.*;
 import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
@@ -7,9 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
-import com.hyou.codemaker.config.ConfigBeanProp;
-import com.hyou.codemaker.config.ConfigMapperProp;
 
 /**
  * 入口
@@ -55,65 +55,38 @@ public class Application {
      * @param context Spring上下文
      */
     private static void doVelocityMerge(ApplicationContext context) {
-        
-        /*
-         * 以下为生成Bean的操作
-         */
+
         BeanMaker beanMaker = context.getBean("beanMaker", BeanMaker.class);
-        beanMaker.velocityMerge();
-        
-        /*
-         * 以下为生成Mapper的操作
-         */
+        beanMaker.velocityMerge(ConstTemplate.BEAN_VM);
+
         MapperMaker mapperMaker = context.getBean("mapperMaker", MapperMaker.class);
-        mapperMaker.velocityMerge();
-        
-        /*
-         * 以下为生成Dao的操作
-         */
-        ConfigMapperProp configMapperProp = context.getBean("configMapperProp", ConfigMapperProp.class);
-        if (configMapperProp.isUseDao()) {
-            DaoMaker daoMaker = context.getBean("daoMaker", DaoMaker.class);
-            daoMaker.velocityMerge();
-        }
-        
-        /*
-         * 以下为生成Service接口定义的操作
-         */
+        mapperMaker.velocityMerge(ConstTemplate.MAPPER_VM);
+
         ServiceInterfaceMaker serviceMaker = context.getBean("serviceInterfaceMaker", ServiceInterfaceMaker.class);
-        serviceMaker.velocityMerge();
-        
-        /*
-         * 以下为生成Service接口实现类定义的操作
-         */
+        serviceMaker.velocityMerge(ConstTemplate.SERVICE_INTERFACE_VM);
+
         ServiceImplMaker serviceImplMaker = context.getBean("serviceImplMaker", ServiceImplMaker.class);
-        serviceImplMaker.velocityMerge();
-        /*
-         * 以下为生成Service抽象类定义的操作
-         */
+        serviceImplMaker.velocityMerge(ConstTemplate.SERVICE_NO_DAO_IMPL_VM);
+
 //        ServiceAbstractMaker serviceAbstractMaker = context.getBean("serviceAbstractMaker", ServiceAbstractMaker.class);
 //        serviceAbstractMaker.velocityMerge();
-        /*
-         * 以下为生成FromVuie接口实现类定义的操作
-         */
+
         FormMaker formMaker = context.getBean("formMaker", FormMaker.class);
-        formMaker.velocityMerge();
-        /*
-         * 以下为生成FromVuie接口实现类定义的操作
-         */
+        FormFileWriterMakerImpl writerMaker = context.getBean(
+                "formFileWriterMaker",FormFileWriterMakerImpl.class);
+        writerMaker.setName("ListForm");
+        formMaker.setWriterMaker(writerMaker);
+        formMaker.velocityMerge(ConstTemplate.LIST_FORM_VM);
+
+
 //        FormVueMaker formVueMaker = context.getBean("formVueMaker", FormVueMaker.class);
 //        formVueMaker.velocityMerge();
-        /*
-         * 以下为生成indexVuie接口实现类定义的操作
-         */
+
 //        IndexMaker indexMaker = context.getBean("indexMaker", IndexMaker.class);
 //        indexMaker.velocityMerge();
 
-        /*
-         * 以下为生成indexVuie接口实现类定义的操作
-         */
         ControlllerMaker controllerMaker = context.getBean("controllerMaker", ControlllerMaker.class);
-        controllerMaker.velocityMerge();
+        controllerMaker.velocityMerge(ConstTemplate.CONTROLLER);
     }
     
 }
